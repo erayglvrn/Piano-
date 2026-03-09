@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symphony - Virtual Piano</title>
+    <meta name="description" content="A premium virtual piano experience. Play Do, Re, Mi with keys 1-7.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Beautiful Night Sky Background -->
+    <div class="night-sky">
+        <div class="moon"></div>
+        <div class="stars"></div>
+        <div class="shooting-stars">
+            <div class="shooting-star"></div>
+            <div class="shooting-star"></div>
+            <div class="shooting-star"></div>
+        </div>
+        <div class="rocket-wrapper">
+            <img class="rocket" src="rocket_blend.png" alt="Flying space rocket" />
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <h1>Virtual Piano</h1>
+            <p>Press <span class="highlight">1 &ndash; 7</span> on your keyboard to play</p>
+        </header>
+
+        <div class="piano-wrapper">
+            <div class="piano-container">
+                <!-- White Keys -->
+                <div class="piano-key white-key" id="key-1">
+                    <div class="key-content">
+                        <span class="note-label">Do</span>
+                        <span class="key-label">1</span>
+                    </div>
+                </div>
+                <div class="piano-key white-key" id="key-2">
+                    <div class="key-content">
+                        <span class="note-label">Re</span>
+                        <span class="key-label">2</span>
+                    </div>
+                </div>
+                <div class="piano-key white-key" id="key-3">
+                    <div class="key-content">
+                        <span class="note-label">Mi</span>
+                        <span class="key-label">3</span>
+                    </div>
+                </div>
+                <div class="piano-key white-key" id="key-4">
+                    <div class="key-content">
+                        <span class="note-label">Fa</span>
+                        <span class="key-label">4</span>
+                    </div>
+                </div>
+                <div class="piano-key white-key" id="key-5">
+                    <div class="key-content">
+                        <span class="note-label">Sol</span>
+                        <span class="key-label">5</span>
+                    </div>
+                </div>
+                <div class="piano-key white-key" id="key-6">
+                    <div class="key-content">
+                        <span class="note-label">La</span>
+                        <span class="key-label">6</span>
+                    </div>
+                </div>
+                <div class="piano-key white-key" id="key-7">
+                    <div class="key-content">
+                        <span class="note-label">Si</span>
+                        <span class="key-label">7</span>
+                    </div>
+                </div>
+
+                <!-- Black Keys (Accidentals) -->
+                <!-- C# -->
+                <div class="piano-key black-key" style="--i: 1" data-freq="277.18"></div>
+                <!-- D# -->
+                <div class="piano-key black-key" style="--i: 2" data-freq="311.13"></div>
+                <!-- F# -->
+                <div class="piano-key black-key" style="--i: 4" data-freq="369.99"></div>
+                <!-- G# -->
+                <div class="piano-key black-key" style="--i: 5" data-freq="415.30"></div>
+                <!-- A# -->
+                <div class="piano-key black-key" style="--i: 6" data-freq="466.16"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

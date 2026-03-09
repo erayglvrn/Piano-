@@ -1,0 +1,475 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Pure black for night sky */
+    background: linear-gradient(-45deg, #000000, #050510, #0a0a0f, #000000);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #fff;
+    overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.app-container {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 30px;
+    padding: 50px 40px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-align: center;
+    width: 95%;
+    max-width: 1000px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Subtle glow behind the container */
+.app-container::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(79, 172, 254, 0.15) 0%, transparent 70%);
+    z-index: -1;
+    filter: blur(40px);
+}
+
+header {
+    margin-bottom: 50px;
+}
+
+header h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(to right, #800020 0%, #B22222 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 12px rgba(178, 34, 34, 0.8));
+    letter-spacing: -1px;
+}
+
+header p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: #a0a5ba;
+    font-weight: 400;
+}
+
+.highlight {
+    color: #fff;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.piano-wrapper {
+    background: linear-gradient(to bottom, #111 0%, #1a1a1a 100%);
+    padding: 25px 15px 15px 15px;
+    border-radius: 16px;
+    box-shadow: inset 0 5px 20px rgba(0, 0, 0, 0.8), 0 20px 40px rgba(0, 0, 0, 0.6);
+    border-top: 2px solid #2a2a2a;
+}
+
+.piano-container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    height: 380px;
+    border-radius: 8px;
+    background: #000;
+}
+
+.white-key {
+    background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+    flex: 1;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: inset 0 -3px 10px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 1;
+}
+
+.white-key:last-child {
+    border-right: none;
+}
+
+.white-key:hover {
+    background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+}
+
+.white-key.active {
+    transform: perspective(800px) rotateX(2deg);
+    background: linear-gradient(to bottom, #f5f5f5 0%, #dcdcdc 100%);
+    box-shadow: inset 0 -1px 3px rgba(0, 0, 0, 0.2), 0 2px 3px rgba(0, 0, 0, 0.3);
+    height: 99%;
+}
+
+.key-content {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 25px;
+    align-items: center;
+    pointer-events: none;
+}
+
+.note-label {
+    color: #444;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    transition: color 0.1s;
+}
+
+.key-label {
+    color: #888;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.white-key.active .note-label {
+    color: #8ec5fc;
+    text-shadow: 0 0 10px rgba(142, 197, 252, 0.4);
+}
+
+.white-key.active .key-label {
+    color: #555;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.black-key {
+    background: linear-gradient(to bottom, #3a3a3a 0%, #0a0a0a 100%);
+    position: absolute;
+    top: 0;
+    /* (100% / 7) calculates the exact width of one white key boundary.
+       Subtracting half the black key's width (3%) centers it exactly on the split. */
+    left: calc(var(--i) * (100% / 7) - 3%);
+    width: 6%;
+    height: 62%;
+    z-index: 10;
+    border-radius: 0 0 6px 6px;
+    box-shadow: inset 0 -3px 5px rgba(255, 255, 255, 0.15), 0 8px 10px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid #000;
+    border-top: none;
+}
+
+.black-key:hover {
+    background: linear-gradient(to bottom, #4a4a4a 0%, #111111 100%);
+}
+
+.black-key.active {
+    transform: perspective(800px) rotateX(3deg);
+    box-shadow: inset 0 -1px 2px rgba(255, 255, 255, 0.1), 0 3px 4px rgba(0, 0, 0, 0.5);
+    height: 61.5%;
+}
+
+/* Responsive constraints */
+@media (max-width: 768px) {
+    .piano-container {
+        height: 250px;
+    }
+
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    .note-label {
+        font-size: 1.1rem;
+    }
+
+    .key-label {
+        font-size: 0.8rem;
+    }
+
+    .app-container {
+        padding: 30px 20px;
+    }
+}
+
+/* -------------------------------------
+   Beautiful Night Sky Background
+   ------------------------------------- */
+
+.night-sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    /* Behind piano */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Beautiful Moon */
+.moon {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: 8%;
+    right: 12%;
+    border-radius: 50%;
+    /* Create a 3D spherical look */
+    background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f4f6f0 40%, #dcdcd0 70%, #aaaaa0 100%);
+    box-shadow:
+        0 0 40px rgba(255, 250, 240, 0.8),
+        0 0 80px rgba(255, 250, 240, 0.4),
+        0 0 140px rgba(255, 250, 240, 0.2),
+        inset -20px -20px 40px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.moon::after {
+    /* Subtle realistic craters */
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 20%;
+    width: 25px;
+    height: 25px;
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 50%;
+    box-shadow:
+        inset 4px 4px 6px rgba(0, 0, 0, 0.2),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.4);
+    filter: blur(1px);
+}
+
+.moon::before {
+    /* Secondary realistic crater clusters */
+    content: '';
+    position: absolute;
+    bottom: 30%;
+    right: 25%;
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    box-shadow:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.3),
+        -30px -40px 0 -5px rgba(0, 0, 0, 0.1),
+        -15px 35px 0 5px rgba(0, 0, 0, 0.08),
+        -45px 10px 0 2px rgba(0, 0, 0, 0.09);
+    filter: blur(1px);
+}
+
+/* Shining Stars */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 0;
+}
+
+.stars::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    /* Dense starry field scattered across viewport */
+    box-shadow:
+        10vw 20vh #fff, 20vw 10vh #fff, 30vw 40vh #fff, 40vw 15vh #fff,
+        50vw 35vh #fff, 60vw 10vh #fff, 70vw 30vh #fff, 80vw 20vh #fff,
+        90vw 5vh #fff, 15vw 45vh #fff, 25vw 25vh #fff, 35vw 5vh #fff,
+        45vw 40vh #fff, 55vw 15vh #fff, 65vw 35vh #fff, 75vw 10vh #fff,
+        85vw 45vh #fff, 95vw 25vh #fff, 5vw 75vh #fff, 15vw 85vh #fff,
+        25vw 65vh #fff, 35vw 95vh #fff, 45vw 70vh #fff, 55vw 80vh #fff,
+        65vw 90vh #fff, 75vw 60vh #fff, 85vw 75vh #fff, 95vw 85vh #fff,
+        5vw 90vh #fff, 30vw 80vh #fff, 70vw 70vh #fff, 90vw 90vh #fff,
+        2vw 2vw #fff, 50vw 50vh #fff;
+    /* Soft continuous twinkle */
+    animation: starsTwinkle 3s infinite alternate ease-in-out;
+}
+
+@keyframes starsTwinkle {
+    0% {
+        opacity: 0.2;
+        box-shadow: 10vw 20vh #fff, 20vw 10vh #fff, 30vw 40vh #fff, 40vw 15vh #fff, 50vw 35vh #fff, 60vw 10vh #fff, 70vw 30vh #fff, 80vw 20vh #fff, 90vw 5vh #fff, 15vw 45vh #fff, 25vw 25vh #fff, 35vw 5vh #fff, 45vw 40vh #fff, 55vw 15vh #fff, 65vw 35vh #fff, 75vw 10vh #fff, 85vw 45vh #fff, 95vw 25vh #fff, 5vw 75vh #fff, 15vw 85vh #fff, 25vw 65vh #fff, 35vw 95vh #fff, 45vw 70vh #fff, 55vw 80vh #fff, 65vw 90vh #fff, 75vw 60vh #fff, 85vw 75vh #fff, 95vw 85vh #fff, 5vw 90vh #fff, 30vw 80vh #fff, 70vw 70vh #fff, 90vw 90vh #fff, 2vw 2vw #fff, 50vw 50vh #fff;
+    }
+
+    100% {
+        opacity: 1;
+        box-shadow: 10vw 20vh #fff, 20vw 10vh #fff, 30vw 40vh #fff, 40vw 15vh #fff, 50vw 35vh rgba(255, 255, 255, 0.2), 60vw 10vh #fff, 70vw 30vh #fff, 80vw 20vh rgba(255, 255, 255, 0.2), 90vw 5vh #fff, 15vw 45vh #fff, 25vw 25vh #fff, 35vw 5vh rgba(255, 255, 255, 0.2), 45vw 40vh #fff, 55vw 15vh #fff, 65vw 35vh #fff, 75vw 10vh #fff, 85vw 45vh rgba(255, 255, 255, 0.2), 95vw 25vh #fff, 5vw 75vh #fff, 15vw 85vh #fff, 25vw 65vh #fff, 35vw 95vh rgba(255, 255, 255, 0.2), 45vw 70vh #fff, 55vw 80vh #fff, 65vw 90vh #fff, 75vw 60vh rgba(255, 255, 255, 0.2), 85vw 75vh #fff, 95vw 85vh #fff, 5vw 90vh #fff, 30vw 80vh rgba(255, 255, 255, 0.2), 70vw 70vh #fff, 90vw 90vh #fff, 2vw 2vw #fff, 50vw 50vh rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Shooting Stars */
+.shooting-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotateZ(-45deg);
+    z-index: 1;
+}
+
+.shooting-star {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 2px;
+    background: linear-gradient(-45deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    border-radius: 999px;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 1));
+    opacity: 0;
+}
+
+.shooting-star::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px 3px rgba(255, 255, 255, 0.8), 0 0 20px 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Three separate shooting stars appearing every 3-5s at different intervals */
+.shooting-star:nth-child(1) {
+    top: calc(50% - 200px);
+    left: calc(50% - 300px);
+    animation: shooting 4s ease-in-out infinite;
+    animation-delay: 0s;
+}
+
+.shooting-star:nth-child(2) {
+    top: calc(50% + 100px);
+    left: calc(50% - 500px);
+    animation: shooting 3s ease-in-out infinite;
+    animation-delay: 1.5s;
+}
+
+.shooting-star:nth-child(3) {
+    top: calc(50% - 150px);
+    left: calc(50% + 200px);
+    animation: shooting 5s ease-in-out infinite;
+    animation-delay: 2.5s;
+}
+
+@keyframes shooting {
+    0% {
+        transform: translateX(0);
+        width: 0;
+        opacity: 1;
+    }
+
+    10% {
+        width: 100px;
+        /* Tail length */
+        opacity: 1;
+    }
+
+    20% {
+        transform: translateX(300px);
+        /* Travel distance */
+        width: 0;
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(300px);
+        width: 0;
+        opacity: 0;
+    }
+}
+
+/* Flying Rocket */
+.rocket-wrapper {
+    position: absolute;
+    z-index: 1;
+    width: 60px;
+    /* appropriately sized rocket */
+    height: 60px;
+    animation: simpleRocketPath 22s infinite linear;
+    top: 100%;
+    left: -10vw;
+}
+
+.rocket {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: rotate(45deg);
+    /* Point the rocket upwards along its path */
+    mix-blend-mode: screen;
+    /* Key fix: pure black backgrounds become totally invisible, colors blend perfectly. */
+}
+
+@keyframes simpleRocketPath {
+    0% {
+        transform: translate(-10vw, 10vh);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    45% {
+        opacity: 1;
+    }
+
+    50% {
+        transform: translate(120vw, -80vh);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(120vw, -80vh);
+        opacity: 0;
+    }
+}
